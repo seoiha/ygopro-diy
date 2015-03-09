@@ -98,9 +98,12 @@ function c116810890.initial_effect(c)
 	ec:SetValue(3)
 	c:RegisterEffect(ec)
 end
+function c116810890.gfilter(c)
+	return c:IsSetCard(0x3e6)
+end
 function c116810890.drcon1(e,tp,eg,ep,ev,re,r,rp)
 	local tg=eg:GetFirst()
-	return eg:GetCount()==1 and tg~=e:GetHandler() and tg:GetSummonType()==SUMMON_TYPE_SYNCHRO
+	return eg:GetCount()==1 and tg~=e:GetHandler() and eg:IsExists(c116810890.gfilter,1,nil) and tg:GetSummonType()==SUMMON_TYPE_SYNCHRO
 end
 function c116810890.drtg1(e,tp,eg,ep,ev,re,r,rp,chk)
 	if chk==0 then return e:GetHandler():IsRelateToEffect(e) end
@@ -115,7 +118,7 @@ function c116810890.drop1(e,tp,eg,ep,ev,re,r,rp)
 end
 function c116810890.drcon(e,tp,eg,ep,ev,re,r,rp)
 	local tg=eg:GetFirst()
-	return eg:GetCount()==1 and tg~=e:GetHandler() and tg:GetSummonType()==SUMMON_TYPE_FUSION
+	return eg:GetCount()==1 and tg~=e:GetHandler() and eg:IsExists(c116810890.gfilter,1,nil) and tg:GetSummonType()==SUMMON_TYPE_FUSION
 end
 function c116810890.drtg(e,tp,eg,ep,ev,re,r,rp,chk)
 	if chk==0 then return e:GetHandler():IsRelateToEffect(e) end

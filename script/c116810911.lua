@@ -9,7 +9,6 @@ function c116810911.initial_effect(c)
 	e1:SetRange(LOCATION_MZONE)
 	e1:SetProperty(EFFECT_FLAG_CARD_TARGET)
 	e1:SetCountLimit(1,116800911)
-	e1:SetCondition(c116810911.setcon)
 	e1:SetTarget(c116810911.sptg)
 	e1:SetOperation(c116810911.spop)
 	c:RegisterEffect(e1)
@@ -20,15 +19,54 @@ function c116810911.initial_effect(c)
 	e2:SetType(EFFECT_TYPE_IGNITION)
 	e2:SetRange(LOCATION_HAND)
 	e2:SetProperty(EFFECT_FLAG_PLAYER_TARGET)
-	e2:SetCountLimit(1,116810911)
+	e2:SetCountLimit(1,116810842)
 	e2:SetCost(c116810911.thcost)
 	e2:SetTarget(c116810911.thtg)
 	e2:SetOperation(c116810911.thop)
 	c:RegisterEffect(e2)
+	--return
+	local e4=Effect.CreateEffect(c)
+	e4:SetDescription(aux.Stringid(116810911,0))
+	e4:SetCategory(CATEGORY_TODECK)
+	e4:SetType(EFFECT_TYPE_SINGLE+EFFECT_TYPE_TRIGGER_O)
+	e4:SetCode(EVENT_SPSUMMON_SUCCESS)
+	e2:SetCountLimit(1,116810843)
+	e4:SetCondition(c116810911.retcon)
+	e4:SetTarget(c116810911.rettg)
+	e4:SetOperation(c116810911.retop)
+	c:RegisterEffect(e4)
 end
 function c116810911.thcost(e,tp,eg,ep,ev,re,r,rp,chk)
 	if chk==0 then return e:GetHandler():IsDiscardable() end
 	Duel.SendtoGrave(e:GetHandler(),REASON_COST+REASON_DISCARD)
+end
+function c116810911.retcon(e,tp,eg,ep,ev,re,r,rp)
+	return e:GetHandler():GetSummonType()==SUMMON_TYPE_RITUAL
+end
+function c116810911.rettg(e,tp,eg,ep,ev,re,r,rp,chk)
+	if chk==0 then return true end
+	local g=Duel.GetMatchingGroup(Card.IsAbleToDeck,tp,LOCATION_REMOVED,LOCATION_REMOVED,nil)
+	Duel.SetOperationInfo(0,CATEGORY_TODECK,g,g:GetCount(),0,0)
+end
+function c116810911.retop(e,tp,eg,ep,ev,re,r,rp)
+	local c=e:GetHandler()
+	if c:IsFacedown() or not c:IsRelateToEffect(e) then return end
+	local g=Duel.GetMatchingGroup(nil,tp,LOCATION_REMOVED,LOCATION_REMOVED,nil)
+	local ct=Duel.SendtoDeck(g,nil,2,REASON_EFFECT)
+	if ct>0 then
+		local e1=Effect.CreateEffect(c)
+		e1:SetType(EFFECT_TYPE_SINGLE)
+		e1:SetCode(EFFECT_UPDATE_ATTACK)
+		e1:SetValue(ct*100)
+		e1:SetReset(RESET_EVENT+0x1ff0000)
+		c:RegisterEffect(e1)
+	end
+end
+function c116810911.atkfilter(c,att)
+	return c:IsFaceup() and c:IsAttribute(att)
+end
+function c116810911.val(e,c)
+	return Duel.GetMatchingGroupCount(c116810911.atkfilter,c:GetControler(),0,LOCATION_MZONE,nil,c:GetAttribute())*300
 end
 function c116810911.thfilter(c)
 	return c:IsSetCard(0x3e6) and c:IsType(TYPE_SPELL+TYPE_TRAP) and c:IsAbleToHand()

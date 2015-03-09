@@ -27,7 +27,15 @@ function c116810940.filter(c)
 	return c:IsType(TYPE_SPELL+TYPE_TRAP)
 end
 function c116810940.setcon(e,tp,eg,ep,ev,re,r,rp)
-	return not Duel.IsExistingMatchingCard(c116810940.filter,tp,LOCATION_GRAVE,0,1,nil)
+	return not Duel.IsExistingMatchingCard(c116810940.filter,tp,LOCATION_GRAVE,0,1,nil) 
+	  and Duel.IsExistingMatchingCard(c116810940.afilter,tp,LOCATION_HAND,0,2,nil) 
+	  and Duel.IsExistingMatchingCard(c116810940.afilter1,tp,LOCATION_EXTRA,0,1,nil) 
+end
+function c116810940.afilter(c)
+	return c:IsSetCard(0x3e6) and c:IsType(TYPE_MONSTER)
+end
+function c116810940.afilter1(c)
+	return c:IsSetCard(0x3e6) and c:IsType(TYPE_MONSTER) and c:IsType(TYPE_FUSION) 
 end
 function c116810940.filter1(c,e,tp,lv)
  local lv=c:GetLevel()

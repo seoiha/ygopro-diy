@@ -91,7 +91,7 @@ function c116810950.sprcon(e,c)
 		and Duel.IsExistingMatchingCard(c116810950.spfilter1,tp,LOCATION_MZONE,0,1,nil,tp)
 end
 function c116810950.spfilter1(c,tp)
-	return (c:IsCode(116810950) or c:IsCode(116810801) or c:IsCode(116810850)) and c:IsCanBeFusionMaterial() 
+	return (c:IsCode(116810950) or c:IsCode(116810801) or c:IsCode(116810850)) and c:IsSetCard(0x3e8) and c:IsCanBeFusionMaterial() 
 		and Duel.IsExistingMatchingCard(c116810950.spfilter2,tp,LOCATION_MZONE,0,1,c)
 end
 function c116810950.spfilter2(c)

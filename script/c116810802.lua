@@ -33,6 +33,9 @@ function c116810802.initial_effect(c)
 	e3:SetOperation(c116810802.op)
 	c:RegisterEffect(e3)
 end
+function c116810802.indcon(e)
+	return Duel.IsExistingMatchingCard(c116810802.indfilter,e:GetHandlerPlayer(),LOCATION_ONFIELD,0,1,nil)
+end
 function c116810802.indfilter(c)
 	return c:IsFaceup() and c:IsType(TYPE_EQUIP)
 end

@@ -2,11 +2,10 @@
 function c116811305.initial_effect(c)
 	--send replace
 	local e1=Effect.CreateEffect(c)
-	e1:SetCode(EFFECT_SEND_REPLACE)
-	e1:SetType(EFFECT_TYPE_SINGLE+EFFECT_TYPE_CONTINUOUS)
-	e1:SetProperty(EFFECT_FLAG_SINGLE_RANGE+EFFECT_FLAG_UNCOPYABLE)
-	e1:SetRange(LOCATION_MZONE)
-	e1:SetTarget(c116811305.reptg)
+	e1:SetType(EFFECT_TYPE_SINGLE+EFFECT_TYPE_TRIGGER_O)
+	e1:SetProperty(EFFECT_FLAG_DAMAGE_STEP+EFFECT_FLAG_DELAY)
+	e1:SetCode(EVENT_TO_GRAVE)
+	e1:SetCondition(c116811305.condition)
 	e1:SetOperation(c116811305.repop)
 	c:RegisterEffect(e1)
 	--lv
@@ -99,11 +98,8 @@ function c116811305.op(e,tp,eg,ep,ev,re,r,rp)
 		tc=g:GetNext()
 	end
 end
-function c116811305.reptg(e,tp,eg,ep,ev,re,r,rp,chk)
-	local c=e:GetHandler()
-	if chk==0 then return c:GetDestination()==LOCATION_GRAVE and c:IsReason(REASON_DESTROY) end
-	if Duel.GetLocationCount(tp,LOCATION_SZONE)<=0 then return false end
-	return Duel.SelectYesNo(tp,aux.Stringid(116811305,0))
+function c116811305.condition(e,tp,eg,ep,ev,re,r,rp)
+	return e:GetHandler():IsPreviousLocation(LOCATION_MZONE+LOCATION_DECK)
 end
 function c116811305.repop(e,tp,eg,ep,ev,re,r,rp,chk)
 	local c=e:GetHandler()

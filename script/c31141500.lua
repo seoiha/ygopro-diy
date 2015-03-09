@@ -52,7 +52,7 @@ function c31141500.target(e,tp,eg,ep,ev,re,r,rp,chk)
 	if chk==0 then return Duel.GetFieldGroupCount(tp,LOCATION_DECK,0)>=5 end
 end
 function c31141500.filter1(c)
-	return c:IsSetCard(0x3d3)
+	return c:IsSetCard(0x3d3) and c:IsType(TYPE_MONSTER) 
 end
 function c31141500.operation(e,tp,eg,ep,ev,re,r,rp)
 	local c=e:GetHandler()
